@@ -29,13 +29,13 @@
 	
 	
 	
-	function animator_draw(_animator, _pos, _scale) {
+	function animator_draw(_animator, _pos, _scale, _rotation) {
 		if (is_null(_animator.animation_))
 			return;
 			
 		var _frame = animation_get_frame(_animator.animation_, _animator.time_);
 		_frame = _animator.animation_.frame_sequence[@ _frame];
-		draw_sprite_ext(_animator.animation_.sprite, _frame, floor(_pos.x), floor(_pos.y), _scale.x, _scale.y, 0.0, c_white, 1.0);
+		draw_sprite_ext(_animator.animation_.sprite, _frame, floor(_pos.x), floor(_pos.y), _scale.x, _scale.y, _rotation, c_white, 1.0);
 	}
 	
 	
@@ -87,6 +87,12 @@
 	
 	function animator_set_paused(_animator, _paused) {
 		_animator.is_paused_ = (_paused ? true : false); // Hacky boolean conversion
+	}
+	
+	
+	
+	function animator_is_finished(_animator) {
+		return (_animator.loop_ > 0);
 	}
 	
 	

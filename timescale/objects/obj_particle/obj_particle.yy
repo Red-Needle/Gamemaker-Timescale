@@ -20,15 +20,17 @@
   "physicsStartAwake": true,
   "physicsKinematic": false,
   "physicsShapePoints": [],
-  "eventList": [],
+  "eventList": [
+    {"isDnD":false,"eventNum":10,"eventType":7,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+  ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "effects",
+    "path": "folders/Objects/effects.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_ai",
+  "name": "obj_particle",
   "tags": [],
   "resourceType": "GMObject",
 }

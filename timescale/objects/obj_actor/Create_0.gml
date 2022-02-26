@@ -1,49 +1,51 @@
-{
+{	
+	
 	event_inherited();
 	
 	
 	
 	#region INIT
+		// Movement
 		walk_speed = 64.0;
 		walk_accel = 128.0;
 		walk_direction = vec2(0.0, 0.0);
 	
-	
+		// Initialize animations
 		walk_animation = array_create(CARDINAL_DIRECTION.COUNT_);
-		walk_animation[@ CARDINAL_DIRECTION.EAST]		= ANIMATION.SAKUYA_EAST;
-		walk_animation[@ CARDINAL_DIRECTION.NORTHEAST]	= ANIMATION.SAKUYA_NORTHEAST;
-		walk_animation[@ CARDINAL_DIRECTION.NORTH]		= ANIMATION.SAKUYA_NORTH;
-		walk_animation[@ CARDINAL_DIRECTION.NORTHWEST]	= ANIMATION.SAKUYA_NORTHEAST;
-		walk_animation[@ CARDINAL_DIRECTION.WEST]		= ANIMATION.SAKUYA_EAST;
-		walk_animation[@ CARDINAL_DIRECTION.SOUTHWEST]	= ANIMATION.SAKUYA_SOUTHEAST;
-		walk_animation[@ CARDINAL_DIRECTION.SOUTH]		= ANIMATION.SAKUYA_SOUTH;
-		walk_animation[@ CARDINAL_DIRECTION.SOUTHEAST]	= ANIMATION.SAKUYA_SOUTHEAST;
+		for (var _i = 0; _i < CARDINAL_DIRECTION.COUNT_; _i++) {
+			walk_animation[@ _i] = ANIMATION.NONE;
+		}
 		
+		// Combat
+		hp_max = 1.0;
+		hp = hp_max;
 		
-		animator_set_animation(animator, ANIMATION.SAKUYA_SOUTH, false);
+		enum TEAM {
+			DEFAULT,
+			ALLY,
+			ENEMY,
+			COUNT_
+		}
+		team = TEAM.DEFAULT;
+		
 	#endregion
 	
 	
-	
-	update = function() {
+	enum DEATH_FLAG {
+		HP_DEPLETED,
+		COUNT_
+	}
+	function on_death(_death_flags) {
 		
-		vec2_scale(walk_direction, walk_speed, vel);
-		
-		if (vec2_sqrlen(walk_direction) != 0.0) {
-			if (walk_direction.x != 0.0)
-				scale.x = sign(walk_direction.x);
-			animator_set_paused(animator, false);
-			animator_set_animation(animator, walk_animation[@ angle_to_cardinal_direction(vec2_angle(walk_direction))], true);
+		if (check_flag(_death_flags, DEATH_FLAG.HP_DEPLETED)) {
+			//particle burst
+			//debris
+			//screen shake
+			//slow time (after a second)
+			//music distortion
 		}
-		else {
-			animator_set_paused(animator, true);
-		}
 		
-	};
+		remove_entity(self);
+	}
 	
-	
-	
-	on_remove = function() {
-		
-	};
 }

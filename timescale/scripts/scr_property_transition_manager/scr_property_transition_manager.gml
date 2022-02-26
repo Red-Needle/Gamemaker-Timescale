@@ -44,7 +44,7 @@
 		
 		//Update props
 		for (var _i = 0; _i < ds_list_size(_manager.prop_list); _i++) {
-			prop_update(_manager.prop_list[|_i]);
+			prop_transition_update(_manager.prop_list[|_i]);
 		}
 	
 		//Remove expired props

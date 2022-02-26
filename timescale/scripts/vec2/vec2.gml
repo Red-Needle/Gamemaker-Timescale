@@ -1,5 +1,8 @@
 	
-	function vec2(_x, _y){
+	//#macro ZERO_VECTOR vec2(0.0, 0.0)
+	
+	
+	function vec2(_x, _y) {
 		return {
 			x : _x,
 			y : _y
@@ -75,6 +78,31 @@
 	}
 	
 	
+	function vec2_perpendicular(_vec, _dest) {
+		var _tempx = _vec.x;
+		var _tempy = _vec.y;
+		
+		_dest.x = -_tempy;
+		_dest.y = _tempx;
+	}
+	
+	
+	function vec2_invert(_vec, _dest) {
+		vec2_scale(_vec, -1.0, _dest);
+	}
+	
+	
+	function vec2_transform(_vec, _xvec, yvec, _dest) {
+		_dest.x = vec2_dot(_vec, _xvec);
+		_dest.y = vec2_dot(_vec, _yvec);
+	}
+	
+	
 	function vec2_angle(_vec) {
 		return point_direction(0.0, 0.0, _vec.x, _vec.y);
+	}
+	
+	
+	function vec2_approach_magnitude(_vec, _new_mag, _adjustment, _dest) {
+	
 	}

@@ -1,3 +1,3 @@
 {	
-	animator_draw(animator, pos, scale);
+	animator_draw(animator, pos, scale, rotation);
 }

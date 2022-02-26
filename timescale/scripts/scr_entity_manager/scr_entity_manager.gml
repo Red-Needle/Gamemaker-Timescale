@@ -59,7 +59,7 @@
 		for (var _i = 0; _i < instance_number(obj_entity); _i ++) {
 			var _obj = instance_find(obj_entity, _i);
 			
-			_obj.update();
+			with(_obj) {event_user(0);}	// Manual update
 			animator_update(_obj.animator, _obj.time_layer);
 			
 			vec2_scale(_obj.vel, time_scale(_obj.time_layer), _vel);
