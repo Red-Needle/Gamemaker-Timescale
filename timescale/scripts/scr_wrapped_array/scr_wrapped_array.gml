@@ -1,7 +1,7 @@
 
 	function create_wrapped_array(_length) {
 		return {
-			array_	: array_create(_length),
+			array_	: array_create(_length),	// I think Gamemaker arrays are automatically cleaned up up once they're dereferenced... I hope...
 			head_	: 0
 		};
 	}

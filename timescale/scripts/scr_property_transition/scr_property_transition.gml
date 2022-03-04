@@ -5,7 +5,7 @@
 			curve_		: _transition_curve,
 			next_		: _next,
 			time_layer_ : _time_layer,
-			time_		: 0.0,
+			time_		: 0.0
 		};
 	}
 	

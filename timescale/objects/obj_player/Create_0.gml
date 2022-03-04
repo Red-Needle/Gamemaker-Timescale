@@ -1,4 +1,9 @@
 {
+	if (!PLAYER_EXISTS)
+		PLAYER = self;
+	else
+		instance_destroy();
+	
 	event_inherited();
 	
 	#region WALK ANIMATIONS
@@ -24,5 +29,4 @@
 	
 	// Time freeze
 	freeze_timescale_mod	= modify_timescale(1.0, -1, TIME_LAYER.DEFAULT); // @TODO rename function so that it properly communicates that you are creating a modifier object that must be manipulated
-	freeze_transition		= NULL;
 }
