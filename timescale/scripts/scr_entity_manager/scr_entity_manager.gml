@@ -65,6 +65,8 @@
 			vec2_scale(_obj.vel, time_scale(_obj.time_layer), _vel);
 			vec2_add(_obj.pos, _vel, _obj.pos);
 			
+			_obj.rotation += _obj.torque * time_scale(_obj.time_layer);
+			
 			//Gamemaker overhead :(
 			//Maybe I should just use structs instead of objs... 🤔
 			_obj.x = _obj.pos.x;

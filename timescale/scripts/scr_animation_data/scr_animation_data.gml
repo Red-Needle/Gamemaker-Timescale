@@ -3,7 +3,8 @@
 		NONE,
 		SAKUYA_NORTH, SAKUYA_NORTHEAST, SAKUYA_EAST, SAKUYA_SOUTHEAST, SAKUYA_SOUTH,
 		MARISA_NORTH, MARISA_NORTHEAST, MARISA_EAST, MARISA_SOUTHEAST, MARISA_SOUTH,
-		FX_STARBURST, FX_SMOKE,
+		FX_STARBURST, FX_SMOKE, FX_DEBRIS,
+		PROJ_DEFAULT, PROJ_SAKUYA, PROJ_MARISA,
 		COUNT_
 	}
 	
@@ -17,12 +18,13 @@
 	
 	function init_all_animations() {
 		
+		// Default all animation pointers to NULL
 		global.animations = array_create(ANIMATION.COUNT_);
 		for (var _i = 0; _i < ANIMATION.COUNT_; _i++) {
 			global.animations[@ _i] = NULL;
 		}
 		
-		//This kind of data may need to go into an external file...
+
 		global.animations[@ ANIMATION.NONE]	= NULL;
 		
 		#region SAKUYA
@@ -56,6 +58,17 @@
 					[0,1,2,3,4,5]);
 				global.animations[@ ANIMATION.FX_SMOKE]			= animation_create( spr_fx_smoke, 1.0/15.0,
 					[0,1,2,3,4,5,6]);
+				global.animations[@ ANIMATION.FX_DEBRIS]		= animation_create( spr_fx_debris, 1.0,
+					[0]);
+		#endregion
+		
+		#region PROJECTILES
+				global.animations[@ ANIMATION.PROJ_DEFAULT]		= animation_create( spr_proj_default, 1.0,
+					[0]);
+				global.animations[@ ANIMATION.PROJ_SAKUYA]		= animation_create( spr_proj_sakuya, 1.0,
+					[0]);
+				global.animations[@ ANIMATION.PROJ_MARISA]		= animation_create( spr_proj_marisa, 1.0,
+					[0]);
 		#endregion
 
 	}

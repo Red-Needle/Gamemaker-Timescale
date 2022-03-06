@@ -2,25 +2,25 @@
 	event_inherited();
 	
 	#region WALK ANIMATIONS
-		walk_animation[@ CARDINAL_DIRECTION.EAST]		= ANIMATION.MARISA_EAST;
+		walk_animation[@ CARDINAL_DIRECTION.EAST]		= ANIMATION.MARISA_EAST;	
 		walk_animation[@ CARDINAL_DIRECTION.NORTHEAST]	= ANIMATION.MARISA_NORTHEAST;
-		walk_animation[@ CARDINAL_DIRECTION.NORTH]		= ANIMATION.MARISA_NORTH;
+		walk_animation[@ CARDINAL_DIRECTION.NORTH]		= ANIMATION.MARISA_NORTH;	
 		walk_animation[@ CARDINAL_DIRECTION.NORTHWEST]	= ANIMATION.MARISA_NORTHEAST;
-		walk_animation[@ CARDINAL_DIRECTION.WEST]		= ANIMATION.MARISA_EAST;
+		walk_animation[@ CARDINAL_DIRECTION.WEST]		= ANIMATION.MARISA_EAST;	
 		walk_animation[@ CARDINAL_DIRECTION.SOUTHWEST]	= ANIMATION.MARISA_SOUTHEAST;
-		walk_animation[@ CARDINAL_DIRECTION.SOUTH]		= ANIMATION.MARISA_SOUTH;
+		walk_animation[@ CARDINAL_DIRECTION.SOUTH]		= ANIMATION.MARISA_SOUTH;	
 		walk_animation[@ CARDINAL_DIRECTION.SOUTHEAST]	= ANIMATION.MARISA_SOUTHEAST;
 	#endregion
 	
 	animator_set_animation(animator, walk_animation[@ CARDINAL_DIRECTION.SOUTH], false);
 
 	// Movement
-	walk_speed = 32.0;
+	walk_speed = 32.0;		//@override
 
 	// Combat
-	hp_max = 10.0;
-	hp = hp_max;
-	team = TEAM.ENEMY;
+	hp_max = 10.0;			//@override
+	hp = hp_max;			//@override
+	team = TEAM.ENEMY;		//@override
 	
 	// AI
 	orbit_distance_enter_	 = 128.0;

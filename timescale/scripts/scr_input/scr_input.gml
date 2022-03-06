@@ -44,6 +44,9 @@
 			global.input[@ _i][@ PRESS]		= false;
 			global.input[@ _i][@ RELEASE]	= false;
 		}
+		
+		// Mouse related
+		global.mouse_vec = vec2(0.0, 0.0);
 	}
 	
 	
@@ -78,6 +81,11 @@
 		global.input_axis.x = input_check(INPUT_COMMAND.RIGHT) - input_check(INPUT_COMMAND.LEFT);
 		global.input_axis.y = input_check(INPUT_COMMAND.DOWN) - input_check(INPUT_COMMAND.UP);
 		vec2_normalize(global.input_axis, global.input_axis);
+		
+		
+		// Mouse related
+		global.mouse_vec.x = mouse_x;
+		global.mouse_vec.y = mouse_y;
 	}
 	
 	
@@ -102,6 +110,12 @@
 	
 	function input_axis() {
 		return global.input_axis;
+	}
+	
+	
+	
+	function input_mouse_pos() {
+		return global.mouse_vec;
 	}
 	
 	

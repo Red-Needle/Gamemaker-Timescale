@@ -152,7 +152,7 @@
 	 *	@arg	_duration		- How long the altered timescale will stay in effect, -1 means forever.
 	 *	@arg	_time_layers	- The time layers that will be altered. Multiple can be specified.
 	 */
-	function modify_timescale(_new_timescale, _duration, _time_layers) {
+	function timescale_mod_add(_new_timescale, _duration, _time_layers) {
 		var _manager = get_timescale_mod_manager();
 		if (is_null(_manager))
 			return;

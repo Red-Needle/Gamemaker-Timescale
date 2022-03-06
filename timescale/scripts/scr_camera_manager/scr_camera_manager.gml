@@ -1,4 +1,9 @@
 
+	#macro DEFAULT_VIEW_WIDTH 640.0
+	#macro DEFAULT_VIEW_HEIGHT 480.0
+
+
+
 	function get_camera_manager() {
 		return global.camera_manager;
 	}
@@ -8,18 +13,18 @@
 	function camera_manager_init() {
 		var _camera = camera_create();
 		camera_set_view_pos(_camera, 0, 0);
+		camera_set_view_size(_camera, DEFAULT_VIEW_WIDTH, DEFAULT_VIEW_HEIGHT);
 		
 		global.camera_manager = {
 			camera_			: _camera,
-			time_layer_		: TIME_LAYER.SYSTEM,
+			time_layer_		: TIME_LAYER.CAMERA,
 			focus_			: vec2(0.0, 0.0),
 			offset_			: vec2(0.0, 0.0),
 			pos_			: vec2(0.0, 0.0),
+			vel_			: vec2(0.0, 0.0),
 			
 			trauma_				: 0.0,
-			instability_		: 0.0,
-			macro_trauma_		: 0.0,
-			macro_instability_	: 0.0,
+			instability_		: 0.0
 		};
 	}
 	
@@ -45,42 +50,33 @@
 		// This system attempts to simulate the camera being hit with some kind of force rather than being shaken
 		// It's overcomplicated and overengineered, but it creates good results
 		
-		// Instability
+		var _tension	= 90.0;
+		var _dampening	= 5.0;
+		
+		_manager.vel_.x += ((_tension * -_manager.offset_.x) - (_dampening * _manager.vel_.x)) * time_scale(_manager.time_layer_);
+		_manager.vel_.y += ((_tension * -_manager.offset_.y) - (_dampening * _manager.vel_.y)) * time_scale(_manager.time_layer_);
+		
+		var _vel_timescale = vec2(0.0, 0.0);	// I really hope gamemaker unallocates memory to structs at the end of a function call...
+		vec2_scale(_manager.vel_, time_scale(_manager.time_layer_), _vel_timescale);
+		
+		vec2_copy(_manager.focus_, _manager.pos_);
+		vec2_add(_manager.offset_, _vel_timescale, _manager.offset_);
+		vec2_add(_manager.pos_, _manager.offset_, _manager.pos_);
+		
+		
+		// Instability (Simulate someone trying to stabalize the camera after it gets hit)
 		_manager.instability_ += _manager.trauma_ * time_scale(_manager.time_layer_);
 		if (_manager.instability_ > 0.0) {
-			_manager.trauma_			-= 128.0 * time_scale(_manager.time_layer_);
+			_manager.trauma_		-= 512.0 * time_scale(_manager.time_layer_);
 		}
 		else {
-			_manager.instability_		= 0.0;
-			_manager.trauma_			= 0.0;
+			_manager.instability_	= 0.0;
+			_manager.trauma_		= 0.0;
 		}
-		
-		_manager.macro_instability_	+= _manager.macro_trauma_ * time_scale(_manager.time_layer_);
-		if (_manager.macro_instability_ > 0.0) {
-			_manager.macro_trauma_		-= 512.0 * time_scale(_manager.time_layer_);
-		}
-		else {
-			_manager.macro_instability_	= 0.0;
-			_manager.macro_trauma_		= 0.0;
-		}
-		
-		// Set up camera position calculation
-		vec2_copy(_manager.focus_, _manager.pos_);
-		
-		// Micro noise
-		
-		_manager.offset_.x =  simple_smooth_noise(get_room_time() * 0.5);
-		_manager.offset_.y = -simple_smooth_noise(get_room_time() * 0.5 + 0.5);
-		vec2_scale(_manager.offset_, _manager.instability_ * 0.25, _manager.offset_);
-		vec2_add(_manager.pos_, _manager.offset_, _manager.pos_);
-		
-		
-		// Macro noise
-		_manager.offset_.x = simple_smooth_noise(get_room_time() * 0.25);
-		_manager.offset_.y = simple_smooth_noise(get_room_time() * 0.25 + 0.5);
-		vec2_scale(_manager.offset_, _manager.macro_instability_ * 2.0, _manager.offset_);
-		vec2_add(_manager.pos_, _manager.offset_, _manager.pos_);
 
+		_manager.pos_.x +=  simple_smooth_noise(get_room_time() * 0.5)			* _manager.instability_ * 0.2;
+		_manager.pos_.y += -simple_smooth_noise(get_room_time() * 0.5 + 0.5)	* _manager.instability_ * 0.2;
+		
 		
 		// Update camera position
 		camera_set_view_pos(_manager.camera_, _manager.pos_.x, _manager.pos_.y);
@@ -105,13 +101,19 @@
 		if (is_null(_manager))
 			return;
 			
-		_manager.trauma_		+= _strength;
-		_manager.macro_trauma_	+= _strength * 2.0;
+		// Initial force from impact
+		var _angle = random(360.0);
+		var _force = vec2(dcos(_angle), -dsin(_angle));	// Vector from rotation
+		vec2_scale(_force, _strength, _force);
+		vec2_add(_manager.vel_, _force, _manager.vel_);
+		
+		// Instability
+		_manager.trauma_ += _strength;
 	}
 	
 	
 	
-	function camera_position(_strength) {
+	function camera_position() {
 		var _manager = get_camera_manager();
 		if (is_null(_manager))
 			return ZERO_VECTOR;

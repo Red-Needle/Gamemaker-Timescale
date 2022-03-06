@@ -2,6 +2,8 @@
 	enum TIME_LAYER {
 		DEFAULT,
 		TIMERS,
+		CAMERA,
+		PLAYER_ACTOR,
 		SYSTEM,
 		
 		COUNT_

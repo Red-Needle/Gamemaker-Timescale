@@ -31,21 +31,32 @@
 	#endregion
 	
 	
-	enum DEATH_FLAG {
-		HP_DEPLETED,
-		COUNT_
-	}
-	function on_death(_death_flags) {
-		
-		if (check_flag(_death_flags, DEATH_FLAG.HP_DEPLETED)) {
-			//particle burst
-			//debris
-			//screen shake
-			//slow time (after a second)
-			//music distortion
-		}
+	
+	function on_death() {
 		
 		remove_entity(self);
+		
+		// Initial impact
+		particle_burst(6, 8, pos, 16.0, 80.0, 100.0, 128.0, 256.0, 64.0, ANIMATION.FX_STARBURST, time_layer);
+		camera_impact(256.0);
+			
+		// Slow time (after a second)
+		timer_add(TIME_LAYER.TIMERS, 0.5, function() {
+			timescale_mod_add(0.5, 2.0, [TIME_LAYER.DEFAULT, TIME_LAYER.PLAYER_ACTOR, TIME_LAYER.TIMERS, TIME_LAYER.CAMERA]);
+		});
+			
+		// Debris burst
+		repeat (irandom_range(4, 8)) {
+			var _o = instance_create_layer(pos.x, pos.y, "Instances", obj_debris);
+			_o.zspeed	= random_range(128.0,	256.0);
+			_o.vel.x	= random_range(-64.0,	64.0);
+			_o.vel.y	= random_range(-64.0,	64.0);
+		}
+			
+		// Music distortion
+		//...
 	}
+		
+	
 	
 }

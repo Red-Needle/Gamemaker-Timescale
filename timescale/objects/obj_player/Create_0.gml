@@ -19,14 +19,20 @@
 	
 	animator_set_animation(animator, walk_animation[@ CARDINAL_DIRECTION.SOUTH], false);
 
+	time_layer = TIME_LAYER.PLAYER_ACTOR; //@override
+
 	// Movement
-	walk_speed = 64.0;
+	walk_speed = 64.0;	//@override
 
 	// Combat
-	hp_max = 3.0;
-	hp = hp_max;
-	team = TEAM.ALLY;
+	hp_max = 3.0;		//@override
+	hp = hp_max;		//@override
+	team = TEAM.ALLY;	//@override
+	
+	proj_speed = 64.0;
+	proj_damage = 1.0;
 	
 	// Time freeze
-	freeze_timescale_mod	= modify_timescale(1.0, -1, TIME_LAYER.DEFAULT); // @TODO rename function so that it properly communicates that you are creating a modifier object that must be manipulated
+	freeze_timescale_mod = timescale_mod_add(1.0, -1, TIME_LAYER.DEFAULT);
+	
 }

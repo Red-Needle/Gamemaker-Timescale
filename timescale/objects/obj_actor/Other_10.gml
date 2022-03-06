@@ -16,6 +16,6 @@
 	
 	if (hp <= 0.0) {
 		hp = 0.0;
-		on_death(DEATH_FLAG.HP_DEPLETED);
+		on_death();
 	}
 }

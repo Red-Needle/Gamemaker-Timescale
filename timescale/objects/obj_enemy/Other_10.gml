@@ -34,6 +34,9 @@
 			}
 			vec2_normalize(walk_direction, walk_direction);
 		
+			if (len(PLAYER.pos.x - pos.x, PLAYER.pos.y - pos.y) < 16.0)
+				hp = 0.0;
+		
 		}
 	#endregion
 }

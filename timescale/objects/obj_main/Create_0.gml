@@ -35,8 +35,4 @@
 	
 	instance_create_layer(room_width*0.25, room_height*0.25, "Instances", obj_enemy);
 	instance_create_layer(room_width*0.75, room_height*0.25, "Instances", obj_enemy);
-	
-	for (var _i = 0; _i < 256; _i++) {
-		noise[_i] = simple_smooth_noise(_i*0.025);
-	}
 }
