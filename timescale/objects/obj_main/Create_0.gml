@@ -6,12 +6,12 @@
 	
 	
 	// Manager initialization
+	debug_init();
+	
 	time_init();
 	time_layers_init();
 	timer_manager_init();
 	timescale_mod_manager_init();
-	
-	prop_transition_manager_init();
 	
 	input_init();
 	input_default_binds();
@@ -22,6 +22,9 @@
 	init_all_animations();
 	entity_manager_init();
 	particle_manager_init(); // <-- Requires animation system to be initialized
+	
+	music_manager_init();
+	music_manager_start(snd_eosd_stage5, snd_eosd_stage5_muffled);
 	
 	
 	// Player pointer initialization

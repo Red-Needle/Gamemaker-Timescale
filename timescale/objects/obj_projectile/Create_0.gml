@@ -11,5 +11,8 @@
 	
 	// Default combat data
 	team	= TEAM.DEFAULT;
-	damage	= 1.0; 
+	damage	= 1.0;
+	
+	collider_radius = 8.0;	//@override
+	
 }

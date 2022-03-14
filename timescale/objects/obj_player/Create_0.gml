@@ -29,8 +29,8 @@
 	hp = hp_max;		//@override
 	team = TEAM.ALLY;	//@override
 	
-	proj_speed = 64.0;
-	proj_damage = 1.0;
+	proj_speed = 256.0;	//@override
+	damage = 1.0;		//@override
 	
 	// Time freeze
 	freeze_timescale_mod = timescale_mod_add(1.0, -1, TIME_LAYER.DEFAULT);

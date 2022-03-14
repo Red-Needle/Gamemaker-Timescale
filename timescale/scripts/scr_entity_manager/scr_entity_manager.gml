@@ -56,6 +56,10 @@
 		var _vel = vec2(0.0, 0.0);	// Temp vector
 									// Memory should be freed automatically after this function call is removed from the stack... right...? Please tell me I'm right... Gamemaker, please... I beg of you...
 		
+		// Test for collisions and execute collision events
+		update_collisions();
+		
+		// Update entities
 		for (var _i = 0; _i < instance_number(obj_entity); _i ++) {
 			var _obj = instance_find(obj_entity, _i);
 			
@@ -67,11 +71,17 @@
 			
 			_obj.rotation += _obj.torque * time_scale(_obj.time_layer);
 			
+			_obj.white_flash -= time_scale(_obj.time_layer);
+			if (_obj.white_flash < 0.0)
+				_obj.white_flash = 0.0;
+			
 			//Gamemaker overhead :(
 			//Maybe I should just use structs instead of objs... 🤔
 			_obj.x = _obj.pos.x;
 			_obj.y = _obj.pos.y;
 		}
+		
+		
 		
 		
 		// Messy coupling between entity manager and entity update... Should entity updates just be an intrinsic part of the entity manager instead of a public function that can be called from anywhere???
