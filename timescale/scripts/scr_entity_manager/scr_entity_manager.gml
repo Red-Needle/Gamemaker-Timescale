@@ -63,25 +63,23 @@
 		for (var _i = 0; _i < instance_number(obj_entity); _i ++) {
 			var _obj = instance_find(obj_entity, _i);
 			
-			with(_obj) {event_user(0);}	// Manual update
-			animator_update(_obj.animator, _obj.time_layer);
+			with(_obj) {event_user(0);}	// Manual update (replacement for step event)
 			
+			animator_update(_obj.animator, _obj.time_layer);
 			vec2_scale(_obj.vel, time_scale(_obj.time_layer), _vel);
 			vec2_add(_obj.pos, _vel, _obj.pos);
-			
 			_obj.rotation += _obj.torque * time_scale(_obj.time_layer);
-			
 			_obj.white_flash -= time_scale(_obj.time_layer);
 			if (_obj.white_flash < 0.0)
 				_obj.white_flash = 0.0;
 			
-			//Gamemaker overhead :(
-			//Maybe I should just use structs instead of objs... 🤔
+			// Gamemaker overhead :(
+			// Maybe I should just use structs instead of objs... 🤔
 			_obj.x = _obj.pos.x;
 			_obj.y = _obj.pos.y;
 		}
 		
-		
+		delete _vel; // please be dead
 		
 		
 		// Messy coupling between entity manager and entity update... Should entity updates just be an intrinsic part of the entity manager instead of a public function that can be called from anywhere???

@@ -44,10 +44,14 @@
 		if (instance_of(_col.o.object_index, obj_projectile)) {
 			if (team != _col.o.team) {
 				hp -= _col.o.damage;
-				white_flash = max(white_flash, 0.2);
-				particle_burst(1, 1, _col.pos, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ANIMATION.FX_STARBURST, TIME_LAYER.DEFAULT);
 				remove_entity(_col.o);
 				
+				// Effects
+				white_flash = max(white_flash, 0.2);
+				particle_burst(1, 1, _col.pos, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ANIMATION.FX_STARBURST, TIME_LAYER.DEFAULT);
+				audio_play_sound(snd_damage, SOUND_PRIORITY.DEFAULT, false);
+				
+				// Player specific
 				if (_self == PLAYER)
 					camera_impact(128.0);
 			}
@@ -76,6 +80,7 @@
 		// Initial impact
 		particle_burst(6, 8, pos, 16.0, 80.0, 100.0, 128.0, 256.0, 64.0, ANIMATION.FX_STARBURST, time_layer);
 		camera_impact(256.0);
+		audio_play_sound(pain, SOUND_PRIORITY.DEFAULT, false);
 			
 		// Slow time and distort music (after a second)
 		timer_add(TIME_LAYER.TIMERS, 0.5, function() {

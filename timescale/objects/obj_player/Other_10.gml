@@ -5,8 +5,15 @@
 	vec2_copy(input_axis(), walk_direction);
 	
 	if (input_check_pressed(INPUT_COMMAND.SLOW)) {
-		timescale_mod_add(0.025, 5.0, [TIME_LAYER.DEFAULT, TIME_LAYER.TIMERS]);
-		music_scale_mod_add(1.0, 5.0);
+		timescale_mod_add(0.025, freeze_duration, [TIME_LAYER.DEFAULT, TIME_LAYER.TIMERS]);
+		music_scale_mod_add(1.0, freeze_duration);
+		audio_play_sound(snd_spellcard, SOUND_PRIORITY.DEFAULT, false);
+		
+		layer_background_change(layer_background_get_id("Background"), spr_background_invert);
+		timer_add(TIME_LAYER.SYSTEM, freeze_duration, function(_ctx) {
+			layer_background_change(layer_background_get_id("Background"), spr_background);
+		});
+		//audio_play_sound(snd_tick_tock, SOUND_PRIORITY.DEFAULT, true);
 	}
 	
 	if (input_check_pressed(INPUT_COMMAND.ATTACK)) {
@@ -18,5 +25,8 @@
 		// Shoot projectile
 		var _o = create_projectile(pos, _angle, proj_speed, 0.0, ANIMATION.PROJ_SAKUYA, damage, team, TIME_LAYER.DEFAULT);
 		_o.rotation = _angle; // Stupid hack, I'm a fraud, call the police.
+		
+		// Effects
+		audio_play_sound(snd_knife, SOUND_PRIORITY.DEFAULT, false);
 	}
 }

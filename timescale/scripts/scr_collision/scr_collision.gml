@@ -1,4 +1,8 @@
 	
+	/*
+	 *	Simple circle overlap test. Circles are defined by a position vector and a radius.
+	 *	Returns true if the two circles are overlapping.
+	 */
 	function circle_overlap(_pos1, _r1, _pos2, _r2) {
 		var _diff = vec2(0.0, 0.0);
 		vec2_sub(_pos2, _pos1, _diff);
@@ -7,19 +11,15 @@
 	
 	
 	
+	/*
+	 *	Calculates the time of intersection between 2 moving circles.
+	 *	Moving circles are defined by a position vector, a velocity vector and a radius.
+	 *	Returns an array.
+	 *	First value is the time of entry, when the two circles first begin to overlap. 
+	 *	Second value is the exit time, when the two circles are no longer overlapping.
+	 */
 	function moving_circle_intersection(_pos1, _vel1, _r1, _pos2, _vel2, _r2) {
 	
-		/*
-		 *	Just take my word for it, this makes sense and it works.
-		 *	The math isn't complicated, but it's a huge equation that has been expanded and reduced many times with the power of algebra.
-		 *	This script is just the result of this algebraic nightmare.
-		 *	Even now, it's not perfect. It probably should have been reduced many more times. This is just the bare minimum for it to become a quadratic equation.
-		 *
-		 *	This method of collision detection is more complicated and CPU intensive than simple overlaps.
-		 *	However, its success is not dependant on framerate. It can detect collisions between small objects moving at very high speeds at low FPS. This is something that regular overlap tests can't do.
-		 *	Returns the time of collision ([0] = entry time, [1] = exit time)
-		 */
-		
 		var _a = (vec2_sqrlen(_vel1) + vec2_sqrlen(_vel2)) - 2.0*vec2_dot(_vel1, _vel2);
 		var _b = 2.0*(vec2_dot(_pos1, _vel1) + vec2_dot(_pos2, _vel2)) - 2.0*(vec2_dot(_pos1, _vel2) + vec2_dot(_pos2, _vel1));
 		var _c = vec2_sqrlen(_pos1) + vec2_sqrlen(_pos2) - 2.0*(vec2_dot(_pos1, _pos2)) - sqr(_r1 + _r2);
@@ -34,6 +34,11 @@
 	
 	
 	
+	/*
+	 *	Main collision management system.
+	 *	Loops through all entities and tests collisions with all other entities.
+	 *	Executes an entity's collision event if a collision is detected with another entity.
+	 */
 	function update_collisions() {
 		
 		/*
@@ -42,11 +47,7 @@
 		 *	I don't understand physics systems enough to make a good collison hierachy, so I will consult google-sensei on this matter later...
 		 *	Yes, there will be duplicate collision checks. Deal with it B)
 		 */
-		 
-		// This list keeps a record of collisions that have already been tested
-		var _tested_collisions_a = ds_map_create();
-		var _tested_collisions_b = ds_map_create();
-		 
+
 		// These vectors will be used to calculate the "real" velocity of tested entities
 		var _scaled_a = vec2(0.0, 0.0);
 		var _scaled_b = vec2(0.0, 0.0);
@@ -55,33 +56,19 @@
 		var _pos_a = vec2(0.0, 0.0);
 		var _pos_b = vec2(0.0, 0.0);
 		
-		// Loop entities and test for collisions
 		for (var _i = 0; _i < instance_number(obj_entity); _i++) {
 			var _a = instance_find(obj_entity, _i);
 			for (var _j = 0; _j < instance_number(obj_entity); _j++) {
 				
 				var _b = instance_find(obj_entity, _j);
-				if (_a == _b) {continue;} // Don't test collisions with self
+				if (_a == _b) {continue;} // Don't test collisions with self >:(
 				
-				// Don't test collisions between entities that have already been tested
-				if	(
-						(ds_map_exists(_tested_collisions_a, _a) && _tested_collisions_a[?_a] == _b) ||
-						(ds_map_exists(_tested_collisions_b, _b) && _tested_collisions_b[?_b] == _a)
-					)	{continue;}
-				
-				// Make sure to time-scale the velocity vectors before using them in any calculations
-				vec2_scale(_a.vel, time_scale(_a.time_layer), _scaled_a);
+				vec2_scale(_a.vel, time_scale(_a.time_layer), _scaled_a); // Make sure to time-scale the velocity vectors before using them in any calculations
 				vec2_scale(_b.vel, time_scale(_b.time_layer), _scaled_b);
 				
-				// Test for collision
 				var _t_array = moving_circle_intersection(_a.pos, _scaled_a, _a.collider_radius, _b.pos, _scaled_b, _b.collider_radius);
-
-				// Add this entity pair to the tested collision maps
-				ds_map_replace(_tested_collisions_a, _a, _b);
-				ds_map_replace(_tested_collisions_b, _b, _a);
-
-				// Collision detected
-				if (!is_null(_t_array) && _t_array[@0] <= 1.0 && _t_array[@0] >= 0.0) {
+				
+				if (!is_null(_t_array) && _t_array[@0] <= 1.0 && _t_array[@0] >= 0.0) { // Collision detected
 					
 					var _collision_data = { // Create a new collision data object for each collision. This is to prevent bugs that occur from collision events modifiying collision data.
 						o	: NULL,
@@ -104,10 +91,7 @@
 					_collision_data.o	= _b;
 					_collision_data.t	= _t_array[@0];
 					
-					// Execute collision event
-					// Usually we would create a list of "detected collisions", then execute collision events later after all collisions have already been detected
-					// This is to prevent collision events from modifiying entity positions and other stuff that could affect the other collision tests
-					// Alas, I can't be bothered :3
+					
 					_a.on_collision(_collision_data, _a);
 				}
 				
@@ -115,8 +99,6 @@
 		}
 		
 		// Cleanup
-		ds_map_destroy(_tested_collisions_a);
-		ds_map_destroy(_tested_collisions_b);
 		delete _scaled_a;
 		delete _scaled_b;
 		delete _pos_a;
