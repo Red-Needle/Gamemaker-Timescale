@@ -35,57 +35,58 @@
 	
 	
 	
-	function approach(_start, _end, _magnitude) {
-		var _value = _start + _magnitude;
+	function approach(_start, _end, _adjustment) {
 		if (_start < _end)
-			return max(_value, _end);
-		if (_start > _end)
-			return min(_value, _end);
-		return _start;
-	}
-	
-	
-	
-	function simple_smooth_noise(_t) {
-		var _a = sin(_t			* pi);
-		var _b = sin(_t * 1.88	* pi);	// The factors are just some meaningless numbers I made up... Don't look into it
-		var _c = sin(_t * 3.13	* pi);
-		var _d = sin(_t * 5.71	* pi);
-		//var _d = 1.0;
-		
-		return average(_a, _b, _c, _d);
-		//return (1.0 - (_a*_b*_c*_d)) * 0.5;
-		return (_a*_b*_c*_d);
+			return min(_start + _adjustment, _end);
+		else
+			return max(_start - _adjustment, _end);
 	}
 	
 	
 	
 	/*
-	 *	Find both solutions to the quadratic equation defined by a, b and c
-	 *	Returns an array containing both solutions
-	 *	Returns NULL if no solution is possible
+	 *	@desc	Generates pseudo random noise
+	 *	@arg	float	- Time value used to generate noise
+	 */
+	function simple_smooth_noise(_t) {
+		var _a = sin(_t			* pi);	// The factors are just some meaningless numbers I made up to create the illustion of randomness
+		var _b = sin(_t * 1.88	* pi);	
+		var _c = sin(_t * 3.13	* pi);
+		var _d = sin(_t * 5.71	* pi);
+		
+		return average(_a, _b, _c, _d);
+	}
+	
+	
+	
+	/*
+	 *	@desc	Find both solutions to the quadratic equation defined by a, b and c ( a(x*x) + b(x) + c = 0 )
+	 *			Returns an array containing both solutions, or NULL if no solution is possible
 	 */
 	function quadratic_solution(_a, _b, _c) {
 
-		if (_a == 0.0)	// This will hurt the feelings of floating points... very sad
+		if (_a == 0.0)
 			return NULL;
 
 		var _dsqr = (_b*_b) - (4.0*_a*_c);
+		
+		if (_dsqr == 0.0)	// Scare away floating point errors
+			_dsqr = 0.0;
 	
 		if (_dsqr < 0.0)
 			return NULL;
 
-		var _d = sqrt(max(0.0, _dsqr));
+		var _d = sqrt(_dsqr);
 	
 		var _solutions = array_create(2);
 		_solutions[@ 0] = (-_b-_d)/(2.0*_a);
 		_solutions[@ 1] = (-_b+_d)/(2.0*_a);
 	
 		//Switch values if needed
-		if (_solutions[@0] > _solutions[@1]) {
-			var _temp = _solutions[@0];
-			_solutions[@0] = _solutions[@1];
-			_solutions[@1] = _temp;
+		if (_solutions[@ 0] > _solutions[@ 1]) {
+			var _temp = _solutions[@ 0];
+			_solutions[@ 0] = _solutions[@ 1];
+			_solutions[@ 1] = _temp;
 		}
 	   
 		return _solutions;

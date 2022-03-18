@@ -4,10 +4,11 @@
 		TIMERS,
 		CAMERA,
 		PLAYER_ACTOR,
-		SYSTEM,
+		SYSTEM,				
 		
 		COUNT_
 	}
+	// SYSTEM time-layer will never be modified. Use this for operations that need a consistent time-scale.
 	
 	
 	

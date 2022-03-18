@@ -1,4 +1,13 @@
 
+	/*
+	 *	WARNING
+	 *	Do NOT directly reference or modify a global time variable. Use the functions provided instead.
+	 *
+	 *	All time values are measured in seconds.
+	 *	If global.time is 3.5, that means 3 and a half seconds have passed since the game started.
+	 */
+	
+	
 	function time_init() {
 		global.fps_limit	= 240;
 		global.fps_min		= 15;
@@ -11,16 +20,16 @@
 	
 	
 	
-	function time_update(){
+	function time_update() {
 		if (fps <= global.fps_min)
 			global.delta_time = 1.0/global.fps_min;	// Game will slow down if fps drops below minimum. This is to ensure that everything still works at very low fps.
 		else
-			global.delta_time = delta_time/1000000.0; // Otherwise, game runs at consistent speed
+			global.delta_time = delta_time/1000000.0; // Conversion from microseconds to seconds
 			
-		global.time += get_delta_time();
-		global.room_time += get_delta_time();
-		global.sin_time += get_delta_time();
-		global.sin_time = global.sin_time mod pi*2.0;
+		global.time			+= get_delta_time();
+		global.room_time	+= get_delta_time();
+		global.sin_time		+= get_delta_time();
+		global.sin_time = global.sin_time mod (pi*2.0);
 	}
 	
 	

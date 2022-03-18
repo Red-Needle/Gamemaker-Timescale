@@ -1,22 +1,38 @@
 	
 	/*
-	 *	Simple circle overlap test. Circles are defined by a position vector and a radius.
-	 *	Returns true if the two circles are overlapping.
+	 *	@desc	Simple circle overlap test. Circles are defined by a position vector and a radius.
+	 *			Returns true if the two circles are overlapping.
+	 *
+	 *	@arg	pos1	- vec2	- position of first circle.
+	 *	@arg	r1		- float	- radius of first circle.
+	 *	@arg	pos2	- vec2	- position of second circle.
+	 *	@arg	r2		- float	- radius of second circle.
 	 */
 	function circle_overlap(_pos1, _r1, _pos2, _r2) {
 		var _diff = vec2(0.0, 0.0);
 		vec2_sub(_pos2, _pos1, _diff);
-		return (vec2_sqrlen(_diff) <= sqr(_r1 + _r2));
+		
+		var _sqrlen = vec2_sqrlen(_diff);
+		delete _diff;
+		
+		return ( _sqrlen <= sqr(_r1 + _r2));
 	}
 	
 	
 	
 	/*
-	 *	Calculates the time of intersection between 2 moving circles.
-	 *	Moving circles are defined by a position vector, a velocity vector and a radius.
-	 *	Returns an array.
-	 *	First value is the time of entry, when the two circles first begin to overlap. 
-	 *	Second value is the exit time, when the two circles are no longer overlapping.
+	 *	@desc	Calculates the time of intersection between 2 moving circles.
+	 *			Moving circles are defined by a position vector, a velocity vector and a radius.
+	 *			Returns an array.
+	 *			First value is the time of entry, when the two circles first begin to overlap. 
+	 *			Second value is the exit time, when the two circles are no longer overlapping.
+	 *
+	 *	@arg	pos1	- vec2	- position of first circle.
+	 *	@arg	vel1	- vec2	- velocity of first circle.
+	 *	@arg	r1		- float	- radius of first circle.
+	 *	@arg	pos2	- vec2	- position of second circle.
+	 *	@arg	vel2	- vec2	- velocity of second circle.
+	 *	@arg	r2		- float	- radius of second circle.
 	 */
 	function moving_circle_intersection(_pos1, _vel1, _r1, _pos2, _vel2, _r2) {
 	
@@ -35,11 +51,12 @@
 	
 	
 	/*
-	 *	Main collision management system.
-	 *	Loops through all entities and tests collisions with all other entities.
-	 *	Executes an entity's collision event if a collision is detected with another entity.
+	 *	@desc	Main collision management system.
+	 *			Loops through all entities and tests collisions with all other entities.
+	 *			Executes an entity's collision event if a collision is detected with another entity.
 	 */
 	function update_collisions() {
+		
 		
 		/*
 		 *	This system is FAR from perfect.
@@ -48,6 +65,7 @@
 		 *	Yes, there will be duplicate collision checks. Deal with it B)
 		 */
 
+
 		// These vectors will be used to calculate the "real" velocity of tested entities
 		var _scaled_a = vec2(0.0, 0.0);
 		var _scaled_b = vec2(0.0, 0.0);
@@ -55,6 +73,7 @@
 		// These vectors will hold "working positions" that will be used to calculate the point of collision between two entities
 		var _pos_a = vec2(0.0, 0.0);
 		var _pos_b = vec2(0.0, 0.0);
+		
 		
 		for (var _i = 0; _i < instance_number(obj_entity); _i++) {
 			var _a = instance_find(obj_entity, _i);
@@ -91,12 +110,13 @@
 					_collision_data.o	= _b;
 					_collision_data.t	= _t_array[@0];
 					
-					
+		
 					_a.on_collision(_collision_data, _a);
 				}
 				
 			}
 		}
+		
 		
 		// Cleanup
 		delete _scaled_a;

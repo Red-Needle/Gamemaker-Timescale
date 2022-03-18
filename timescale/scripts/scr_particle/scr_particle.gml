@@ -1,4 +1,8 @@
 
+	/*
+	 *	Particle constructor.
+	 *	Do NOT directly call. Use particle_burst() instead.
+	 */
 	function particle_create(_pos, _vel, _fric, _animation_id, _time_layer, _particle_index) {
 		var _animator = animator_create();
 		animator_set_animation(_animator, _animation_id, false);
@@ -16,6 +20,10 @@
 	
 	
 	
+	/*
+	 *	Updates the specified particle instance.
+	 *	Deletes the particle once it has expired.
+	 */
 	function particle_update(_particle) {
 		// Messy :( May need extra functions for scaled vector arithmatic without creating a new working vector...
 		_particle.pos_.x += _particle.vel_.x * time_scale(_particle.time_layer_);
@@ -29,12 +37,18 @@
 	
 	
 	
+	/*
+	 *	Draws the specified particle instance.
+	 */
 	function particle_draw(_particle) {
 		animator_draw(_particle.animator_, _particle.pos_, _particle.scale_, 0.0);
 	}
 	
 	
 	
+	/*
+	 *	Returns the index of this particle in the particle manager's particle array.
+	 */
 	function particle_get_index(_particle) {
 		return _particle.particle_index_;
 	}

@@ -1,7 +1,16 @@
 
+	/*
+	 *	Warpped Array
+	 *
+	 *	An array interface that allows values to be pushed onto an array similar to a stack.
+	 *	Once the "head" of the stack reaches the bounds of the array, it wraps back around to the start of the array.
+	 *	Thus, continuing to push values onto the stack will overwrite previous values.
+	 */
+	
+	
 	function create_wrapped_array(_length) {
 		return {
-			array_	: array_create(_length),	// I think Gamemaker arrays are automatically cleaned up up once they're dereferenced... I hope...
+			array_	: array_create(_length),
 			head_	: 0
 		};
 	}

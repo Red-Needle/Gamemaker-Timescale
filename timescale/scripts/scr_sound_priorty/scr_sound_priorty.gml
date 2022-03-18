@@ -1,0 +1,8 @@
+	
+	enum SOUND_PRIORITY {
+		MUSIC,
+		DEFAULT,
+		IMPORTANT,
+		CRITICAL,
+		COUNT_
+	}

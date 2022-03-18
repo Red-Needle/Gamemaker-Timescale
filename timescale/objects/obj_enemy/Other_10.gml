@@ -44,7 +44,7 @@
 			if (reload_timer_ < reload_delay_)
 				reload_timer_ += time_scale(time_layer);
 			else {
-				create_projectile_arc(3, vec2_angle(to_player_), proj_speed, 45.0, NULL, pos, 360.0, ANIMATION.PROJ_MARISA, damage, team, time_layer);
+				create_projectile_arc(3, vec2_angle(to_player_), proj_speed, 45.0, pos, 360.0, ANIMATION.PROJ_MARISA, damage, team, time_layer);
 				reload_timer_ = 0.0;
 			}
 		

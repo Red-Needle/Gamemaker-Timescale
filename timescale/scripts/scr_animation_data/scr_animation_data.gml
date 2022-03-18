@@ -18,7 +18,7 @@
 	
 	function init_all_animations() {
 		
-		// Default all animation pointers to NULL
+		// Set all animation pointers to NULL by default
 		global.animations = array_create(ANIMATION.COUNT_);
 		for (var _i = 0; _i < ANIMATION.COUNT_; _i++) {
 			global.animations[@ _i] = NULL;

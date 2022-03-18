@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "helper",
-    "path": "folders/Scripts/helper.yy",
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scr_curve_helpers",
+  "name": "_credits",
   "tags": [],
   "resourceType": "GMScript",
 }

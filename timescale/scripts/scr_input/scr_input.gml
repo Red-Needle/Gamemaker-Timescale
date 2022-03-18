@@ -45,7 +45,6 @@
 			global.input[@ _i][@ RELEASE]	= false;
 		}
 		
-		// Mouse related
 		global.mouse_vec = vec2(0.0, 0.0);
 	}
 	
@@ -122,8 +121,8 @@
 	
 	function input_default_binds() {
 		
-		// Bake the default binds into the game-code instead of storing them in a list or an external file
-		// This ensures that the default binds are an intrinsic part of the game systems and cannot be modified
+		// Bake the default binds into the game-code instead of storing them in a list or an external file.
+		// This ensures that the default binds are an intrinsic part of the game systems and cannot be modified. (no idea if this is good practice or not, so don't copy me please.)
 		
 		global.binds[@ INPUT_COMMAND.LEFT].type		= BIND_TYPE.KEYBOARD;
 		global.binds[@ INPUT_COMMAND.LEFT].button	= ord("A");

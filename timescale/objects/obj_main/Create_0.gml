@@ -1,10 +1,4 @@
 {	
-	// System variables
-	// It goes without saying, but these should NEVER be manually modified
-	global.__zero_vector__ = vec2(0.0, 0.0);
-	#macro ZERO_VECTOR global.__zero_vector__
-	
-	
 	// Manager initialization
 	debug_init();
 	

@@ -24,12 +24,6 @@
 		proj_speed = 64.0;
 		damage = 1.0;
 		
-		enum TEAM {
-			DEFAULT,
-			ALLY,
-			ENEMY,
-			COUNT_
-		}
 		team = TEAM.DEFAULT;
 	#endregion
 	

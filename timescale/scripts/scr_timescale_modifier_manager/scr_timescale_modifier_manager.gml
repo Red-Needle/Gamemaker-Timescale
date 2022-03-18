@@ -1,34 +1,86 @@
 
+
+	/*
+	 *	@desc	Alter the timescale of the specified time layers.
+	 *			Returns a "timescale_mod" instance which can be used to interface with the altered timescale.
+	 *			Eg: var _slowmow = timescale_mod_add(...); _slowmow.scale = 0.25; timescale_mod_remove(_slowmow);
+	 *
+	 *	@arg	new_timescale	- float				- The new timescale value that the specified time layer will use.
+	 *	@arg	duration		- float				- How long the altered timescale will stay in effect, -1 means forever.
+	 *	@arg	time_layers		- array<TIME_LAYER>	- The time layers that will be altered. Takes either a single time layer or an array of multiple time layers.
+	 *
+	 *	@example	timescale_mod_add(0.5, 10.0, [TIME_LAYER.DEFAULT, TIME_LAYER.PLAYER_ACTOR])
+	 */
+	function timescale_mod_add(_new_timescale, _duration, _time_layers) {
+		var _manager = get_timescale_mod_manager();
+		if (is_null(_manager))
+			return;
+			
+		var _mod = timescale_mod_create_(_new_timescale, _duration, _time_layers);
+		ds_list_add(_manager.mods_to_add_, _mod);
+		
+		return _mod;
+	}
+	
+	
+	
+	/*
+	 *	@desc	Removes the specified timescale mod from the system.
+	 */
+	function timescale_mod_remove(_mod) {
+		var _manager = get_timescale_mod_manager();
+		if (is_null(_manager))
+			return;
+			
+		ds_list_add(_manager.mods_to_remove_, _mod);
+	}
+	
+	
+
+	/*
+	 *	@desc	Initialize timescale mod manager system.
+	 */
 	function timescale_mod_manager_init() {
 		global.timescale_mod_manager = {
-			mod_list			: ds_list_create(),
-			mods_to_remove		: ds_list_create(),
-			mods_to_add			: ds_list_create(),
+			mods_				: ds_list_create(),
+			mods_to_remove_		: ds_list_create(),
+			mods_to_add_		: ds_list_create(),
 			layer_scale_array_	: array_create(TIME_LAYER.COUNT_)
 		};
 	}
 	
 	
 	
+	/*
+	 *	@desc	Deintialize timescale mod manager system and cleanup data structures.
+	 */
 	function timescale_mod_manager_deinit() {
 		var _manager = get_timescale_mod_manager();
 		if (is_null(_manager))
 			return;
 		
-		ds_list_destroy(_manager.mod_list);
-		ds_list_destroy(_manager.mods_to_remove);
-		ds_list_destroy(_manager.mods_to_add);
+		ds_list_destroy(_manager.mods_);
+		ds_list_destroy(_manager.mods_to_remove_);
+		ds_list_destroy(_manager.mods_to_add_);
 		global.timescale_mod_manager = NULL;
 	}
 	
 	
 	
+	/*
+	 *	@desc	Returns the current timescale mod manager instance.
+	 *			Do NOT directly reference or modify global.timescale_mod_manager. Use this function instead.
+	 */
 	function get_timescale_mod_manager() {
 		return global.timescale_mod_manager;
 	}
 	
 	
 	
+	/*
+	 *	@desc	Updates the current timescale mod manager instance.
+	 *			Manages, calculates and applies timescales to each time layer.
+	 */
 	function timescale_mod_manager_update() {
 		
 		var _manager = get_timescale_mod_manager();
@@ -42,8 +94,8 @@
 		}
 		
 		
-		for (var _i = 0; _i < ds_list_size(_manager.mod_list); _i++) {
-			var _mod = _manager.mod_list[|_i];
+		for (var _i = 0; _i < ds_list_size(_manager.mods_); _i++) {
+			var _mod = _manager.mods_[|_i];
 			
 			//Update the modifier
 			if (_mod.duration != -1) {
@@ -71,22 +123,42 @@
 	
 	
 		//Remove expired timescale modifiers
-		for (var _i = 0; _i < ds_list_size(_manager.mods_to_remove); _i++) {
-			timescale_mod_manager_remove_mod_now_(_manager.mods_to_remove[|_i]);
+		for (var _i = 0; _i < ds_list_size(_manager.mods_to_remove_); _i++) {
+			timescale_mod_manager_remove_mod_now_(_manager.mods_to_remove_[|_i]);
 		}
-		ds_list_clear(_manager.mods_to_remove);
+		ds_list_clear(_manager.mods_to_remove_);
 		
 		//Add pending timescale modifiers
-		for (var _i = 0; _i < ds_list_size(_manager.mods_to_add); _i++) {
-			timescale_mod_manager_add_mod_now_(_manager.mods_to_add[|_i]);
+		for (var _i = 0; _i < ds_list_size(_manager.mods_to_add_); _i++) {
+			timescale_mod_manager_add_mod_now_(_manager.mods_to_add_[|_i]);
 		}
-		ds_list_clear(_manager.mods_to_add);
+		ds_list_clear(_manager.mods_to_add_);
 		
 	}
 	
 	
 	
-	function timescale_mod_create(_new_timescale, _duration, _time_layer_array) {
+	/*
+	 *	@desc	Returns true if the specified timescale modifier is still within the timescale system.
+	 */
+	function timescale_mod_exists(_mod) {
+		var _manager = get_timescale_mod_manager();
+		if (is_null(_manager))
+			return false;
+			
+		if (is_null(_mod))
+			return false;
+			
+		return (ds_list_find_index(_manager.mods_, _mod) != -1);
+	}
+	
+	
+	
+	/*
+	 *	@desc	Timescale mod constructor.
+	 *			Do not call directly. Use timescale_mod_add() instead.
+	 */
+	function timescale_mod_create_(_new_timescale, _duration, _time_layer_array) {
 		return {
 			scale		: _new_timescale,
 			duration	: _duration,
@@ -97,86 +169,31 @@
 	
 	
 	
-	function timescale_mod_remove(_mod) {
-		var _manager = get_timescale_mod_manager();
-		if (is_null(_manager))
-			return;
-			
-		ds_list_add(_manager.mods_to_remove, _mod);
-	}
-	
-	
-	
-	function timescale_mod_exists(_mod) {
-		var _manager = get_timescale_mod_manager();
-		if (is_null(_manager))
-			return false;
-			
-		if (is_null(_mod))
-			return false;
-			
-		return (ds_list_find_index(_manager.mod_list, _mod) != -1);
-	}
-	
-	
-	
-	function timescale_mod_manager_remove_mod_now_(_mod) {
-		var _manager = get_timescale_mod_manager();
-		if (is_null(_manager))
-			return;
-			
-		var _index = ds_list_find_index(_manager.mod_list, _mod);
-		if (_index == -1)
-			return;
-		ds_list_delete(_manager.mod_list, _index);
-	}
-	
-	
-	
+	/*
+	 *	@desc	Immediately adds a timescale mod to the system.
+	 *			Do not call directly. Use timescale_mod_add() instead.
+	 */
 	function timescale_mod_manager_add_mod_now_(_mod) {
 		var _manager = get_timescale_mod_manager();
 		if (is_null(_manager))
 			return;
 			
-		ds_list_add(_manager.mod_list, _mod);
+		ds_list_add(_manager.mods_, _mod);
 	}
 	
 	
 	
 	/*
-	 *	@desc	Alter the timescale of the specified time layer.
-	 *			Returns a "timescale_mod" instance which can be used to interface with the altered timescale.
-	 *			Eg: var _slowmow = change_timescale(...); remove_timescale_mod(_slowmow);
-	 *
-	 *	@arg	_new_timescale	- The new timescale value that the specified time layer will use.
-	 *	@arg	_duration		- How long the altered timescale will stay in effect, -1 means forever.
-	 *	@arg	_time_layers	- The time layers that will be altered. Multiple can be specified.
+	 *	@desc	Immediately removes a timescale mod from the system.
+	 *			Do not call directly. Use timescale_mod_remove() instead.
 	 */
-	function timescale_mod_add(_new_timescale, _duration, _time_layers) {
+	function timescale_mod_manager_remove_mod_now_(_mod) {
 		var _manager = get_timescale_mod_manager();
 		if (is_null(_manager))
 			return;
 			
-		var _mod = timescale_mod_create(_new_timescale, _duration, _time_layers);
-		ds_list_add(_manager.mods_to_add, _mod);
-		
-		return _mod;
-	}
-	
-	
-	
-	/*
-	 *	@desc	Start a timescale transition for the specified time layers. This will transition the timescale value gradually.
-	 *			Returns a "timescale_mod" instance which can be used to interface with the altered timescale.
-	 *			Eg: var _slowmow = change_timescale(...); remove_timescale_mod(_slowmow);
-	 *
-	 *	@arg	_start				- Scale value at the beginning of the transition.
-	 *	@arg	_end				- Scale value at the end of the transition.
-	 *	@arg	_transition_time	- Amount of time (in seconds) to transition from the _start value to the _end value.
-	 *	@arg	_transition_curve	- Animation curve that will be used to interpolate the final scale value between _start and _end.
-	 *	@arg	_duration			- How long the altered timescale will stay in effect after the transition is finished, -1 means forever.
-	 *	@arg	_time_layers		- The time layers that will be altered. Multiple can be specified.
-	 */
-	function transition_timescale(_start, _end, _transition_time, _transition_curve, _duration, _time_layers) {
-		
+		var _index = ds_list_find_index(_manager.mods_, _mod);
+		if (_index == -1)
+			return;
+		ds_list_delete(_manager.mods_, _index);
 	}

@@ -1,5 +1,9 @@
 
-	function timer_create(_time_layer, _delay, _callback) {
+	/*
+	 *	@desc	Timer constructor.
+	 *			Do not call directly. Use timer_add() instead.
+	 */
+	function timer_create_(_time_layer, _delay, _callback) {
 		return {
 			time		: 0.0,
 			callback	: _callback,
@@ -12,21 +16,10 @@
 
 
 
-	function timer_add(_time_layer, _delay, _callback) {
-		var _timer = timer_create(_time_layer, _delay, _callback);
-		_timer.context.caller = self;
-		timer_manager_queue_add_timer(_timer);
-		return _timer;
-	}
-
-
-
-	function timer_remove(_timer) {
-		timer_manager_queue_remove_timer(_timer);
-	}
-
-
-
+	/*
+	 *	@desc	Updates the specified timer instance.
+	 *			Executes timer callback if the timer expires.
+	 */
 	function timer_update(_timer){
 		if (timer_is_paused(_timer))
 			return;
@@ -43,24 +36,37 @@
 
 
 
+	/*
+	 *	@desc	Returns true if the specified timer instance has expired.
+	 */
 	function timer_has_expired(_timer) {
 		return (_timer.time > _timer.delay);
 	}
 	
 	
 	
+	/*
+	 *	@desc	Returns the amount of time that has passed since this timer was added to the timer system. Measured in seconds.
+	 */
 	function timer_get_time(_timer) {
 		return _timer.time;
 	}
 	
 	
 	
+	/*
+	 *	@desc	Pause or unpause the specified timer.
+	 *	@arg	is_paused	- boolean
+	 */
 	function timer_set_paused(_timer, _is_paused) {
 		_timer.is_paused_ = _is_paused;
 	}
 	
 	
 	
+	/*
+	 *	@desc	Returns true if the specified timer is currently paused.
+	 */
 	function timer_is_paused(_timer) {
 		return _timer.is_paused_;
 	}

@@ -22,6 +22,8 @@
 		vec2_sub(input_mouse_pos(), pos, _to_mouse);
 		var _angle = vec2_angle(_to_mouse);
 		
+		delete _to_mouse;
+		
 		// Shoot projectile
 		var _o = create_projectile(pos, _angle, proj_speed, 0.0, ANIMATION.PROJ_SAKUYA, damage, team, TIME_LAYER.DEFAULT);
 		_o.rotation = _angle; // Stupid hack, I'm a fraud, call the police.
