@@ -1,7 +1,7 @@
 
 	/*
-	 *	Particle constructor.
-	 *	Do NOT directly call. Use particle_burst() instead.
+	 *	@desc	Particle constructor.
+	 *			Do NOT directly call. Use particle_burst() instead.
 	 */
 	function particle_create(_pos, _vel, _fric, _animation_id, _time_layer, _particle_index) {
 		var _animator = animator_create();
@@ -21,14 +21,15 @@
 	
 	
 	/*
-	 *	Updates the specified particle instance.
-	 *	Deletes the particle once it has expired.
+	 *	@desc	Updates the specified particle instance.
+	 *			Deletes the particle once it has expired.
 	 */
 	function particle_update(_particle) {
-		// Messy :( May need extra functions for scaled vector arithmatic without creating a new working vector...
-		_particle.pos_.x += _particle.vel_.x * time_scale(_particle.time_layer_);
-		_particle.pos_.y += _particle.vel_.y * time_scale(_particle.time_layer_);
-		//vec2_approach_magnitude(_particle.vel_, 0.0, _particle.fric_, _particle.vel_);
+		var _vel_scaled = vec2(0.0, 0.0);
+		vec2_scale(_particle.vel_, time_scale(_particle.time_layer_), _vel_scaled);	// Time-scale velocity before using it in any calculations
+		vec2_add(_particle.pos_, _vel_scaled, _particle.pos_);
+		delete _vel_scaled;
+
 		animator_update(_particle.animator_, _particle.time_layer_);
 		
 		if (animator_is_finished(_particle.animator_))
@@ -38,7 +39,7 @@
 	
 	
 	/*
-	 *	Draws the specified particle instance.
+	 *	@desc	Draws the specified particle instance.
 	 */
 	function particle_draw(_particle) {
 		animator_draw(_particle.animator_, _particle.pos_, _particle.scale_, 0.0);
@@ -47,7 +48,7 @@
 	
 	
 	/*
-	 *	Returns the index of this particle in the particle manager's particle array.
+	 *	@desc	Returns the index of this particle in the particle manager's particle array.
 	 */
 	function particle_get_index(_particle) {
 		return _particle.particle_index_;

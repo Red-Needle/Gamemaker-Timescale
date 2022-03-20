@@ -17,7 +17,7 @@
 			return;
 			
 		var _mod = timescale_mod_create_(_new_timescale, _duration, _time_layers);
-		ds_list_add(_manager.mods_to_add_, _mod);
+		ds_list_add(_manager.mods_, _mod);
 		
 		return _mod;
 	}
@@ -32,7 +32,10 @@
 		if (is_null(_manager))
 			return;
 			
-		ds_list_add(_manager.mods_to_remove_, _mod);
+		var _index = ds_list_find_index(_manager.mods_, _mod);
+		if (_index == -1)
+			return;
+		ds_list_delete(_manager.mods_, _index);
 	}
 	
 	
@@ -43,8 +46,6 @@
 	function timescale_mod_manager_init() {
 		global.timescale_mod_manager = {
 			mods_				: ds_list_create(),
-			mods_to_remove_		: ds_list_create(),
-			mods_to_add_		: ds_list_create(),
 			layer_scale_array_	: array_create(TIME_LAYER.COUNT_)
 		};
 	}
@@ -60,8 +61,6 @@
 			return;
 		
 		ds_list_destroy(_manager.mods_);
-		ds_list_destroy(_manager.mods_to_remove_);
-		ds_list_destroy(_manager.mods_to_add_);
 		global.timescale_mod_manager = NULL;
 	}
 	
@@ -120,20 +119,6 @@
 			time_layer_set(_i, _manager.layer_scale_array_[@ _i]);
 		}
 		
-	
-	
-		//Remove expired timescale modifiers
-		for (var _i = 0; _i < ds_list_size(_manager.mods_to_remove_); _i++) {
-			timescale_mod_manager_remove_mod_now_(_manager.mods_to_remove_[|_i]);
-		}
-		ds_list_clear(_manager.mods_to_remove_);
-		
-		//Add pending timescale modifiers
-		for (var _i = 0; _i < ds_list_size(_manager.mods_to_add_); _i++) {
-			timescale_mod_manager_add_mod_now_(_manager.mods_to_add_[|_i]);
-		}
-		ds_list_clear(_manager.mods_to_add_);
-		
 	}
 	
 	
@@ -165,35 +150,4 @@
 			time_layers : _time_layer_array,
 			time_		: 0.0
 		};
-	}
-	
-	
-	
-	/*
-	 *	@desc	Immediately adds a timescale mod to the system.
-	 *			Do not call directly. Use timescale_mod_add() instead.
-	 */
-	function timescale_mod_manager_add_mod_now_(_mod) {
-		var _manager = get_timescale_mod_manager();
-		if (is_null(_manager))
-			return;
-			
-		ds_list_add(_manager.mods_, _mod);
-	}
-	
-	
-	
-	/*
-	 *	@desc	Immediately removes a timescale mod from the system.
-	 *			Do not call directly. Use timescale_mod_remove() instead.
-	 */
-	function timescale_mod_manager_remove_mod_now_(_mod) {
-		var _manager = get_timescale_mod_manager();
-		if (is_null(_manager))
-			return;
-			
-		var _index = ds_list_find_index(_manager.mods_, _mod);
-		if (_index == -1)
-			return;
-		ds_list_delete(_manager.mods_, _index);
 	}

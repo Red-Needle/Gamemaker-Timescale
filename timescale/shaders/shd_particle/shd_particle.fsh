@@ -1,3 +1,8 @@
+/*
+ *	If performance becomes an issue, then simplify the particle shader to reduce GPU load
+ *	Currently this is just the standard Gamemaker sprite shader
+ */
+
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 

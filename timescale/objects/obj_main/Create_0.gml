@@ -27,7 +27,7 @@
 	#macro PLAYER_EXISTS (!is_null(PLAYER) && instance_exists(PLAYER) && PLAYER.object_index == obj_player)
 	
 	
-	// Room initialization
+	// Set up the combat encounter
 	PLAYER = instance_create_layer(room_width*0.5, room_height*0.5, "Instances", obj_player);
 	
 	instance_create_layer(room_width*0.25, room_height*0.25, "Instances", obj_enemy);

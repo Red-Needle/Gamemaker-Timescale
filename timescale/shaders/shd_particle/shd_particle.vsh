@@ -1,5 +1,5 @@
 /*
- *	If performance becomes an issue, we can simplify the particle shader to reduce GPU load
+ *	If performance becomes an issue, then simplify the particle shader to reduce GPU load
  *	Currently this is just the standard Gamemaker sprite shader
  */
 

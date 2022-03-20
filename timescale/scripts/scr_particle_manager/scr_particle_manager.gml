@@ -1,8 +1,6 @@
 	
 	/*
 	 * Structs are used for particles instead of gamemaker objs. This is because objs have a LOT of overhead. A LOT.
-	 * Gamemaker already has a built-in particle system, but it's really bad and stupid. It's somehow both too complex and also lacking in features.
-	 *
 	 * This system is DEFINITLY overkill for a small project like this. It's just that I physically cringe whenever I think about using Gamemaker's built in particle systems...
 	 */
 	
