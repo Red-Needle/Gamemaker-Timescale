@@ -104,7 +104,7 @@
 		delete _vel;
 
 			
-		// Entities are removed after ALL entities have been updated. If an entity destroys itself, then it won't break code that depends on that entity's existence.
+		// Expired entities are removed AFTER all entities have been updated. If an entity destroys itself, then it won't break code that depends on that entity's existence.
 		for (var _i = 0; _i < ds_list_size(_entity_manager.ents_to_remove_); _i++) {
 			entity_manager_remove_entity_now_(_entity_manager.ents_to_remove_[|_i]);
 		}

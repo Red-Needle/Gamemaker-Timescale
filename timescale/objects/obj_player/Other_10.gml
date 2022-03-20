@@ -5,15 +5,21 @@
 	vec2_copy(input_axis(), walk_direction);
 	
 	if (input_check_pressed(INPUT_COMMAND.SLOW)) {
-		timescale_mod_add(0.025, freeze_duration, [TIME_LAYER.DEFAULT, TIME_LAYER.TIMERS]);
-		music_scale_mod_add(1.0, freeze_duration);
-		audio_play_sound(snd_spellcard, SOUND_PRIORITY.DEFAULT, false);
+		if (can_freeze_time_) {
+			can_freeze_time_ = false;
+			
+			audio_play_sound(snd_spellcard, SOUND_PRIORITY.DEFAULT, false);
+			layer_background_change(layer_background_get_id("Background"), spr_background_invert);
 		
-		layer_background_change(layer_background_get_id("Background"), spr_background_invert);
-		timer_add(TIME_LAYER.SYSTEM, freeze_duration, function(_ctx) {
-			layer_background_change(layer_background_get_id("Background"), spr_background);
-		});
-		//audio_play_sound(snd_tick_tock, SOUND_PRIORITY.DEFAULT, true);
+			timescale_mod_add(0.025, freeze_duration_, [TIME_LAYER.DEFAULT, TIME_LAYER.TIMERS]);
+		
+			music_scale_mod_add(1.0, freeze_duration_);
+			timer_add(TIME_LAYER.SYSTEM, freeze_duration_, function(_ctx) {
+				layer_background_change(layer_background_get_id("Background"), spr_background);
+				if (instance_exists(self))
+					self.can_freeze_time_ = true;
+			});
+		}
 	}
 	
 	if (input_check_pressed(INPUT_COMMAND.ATTACK)) {

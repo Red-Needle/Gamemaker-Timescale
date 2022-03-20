@@ -33,7 +33,7 @@
 	damage = 1.0;		//@override
 	
 	// Time freeze
-	freeze_timescale_mod = timescale_mod_add(1.0, -1, TIME_LAYER.DEFAULT);
-	freeze_duration = 4.0;
+	freeze_duration_ = 4.0;
+	can_freeze_time_ = true;
 	
 }

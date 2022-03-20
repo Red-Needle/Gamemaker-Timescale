@@ -6,7 +6,8 @@
  *	Touhou Embodiment of Scarlet Devil : ZUN
  *
  *	Character animations:
- *	Don't know where these came from, They are sprites commonly found in many Touhou fan games
+ *	Don't know where these came from. They are sprites commonly found in many Touhou fan games.
+ *	If anyone knows who made them, let me know.
  *
  *	Effect animations:
  *	Me

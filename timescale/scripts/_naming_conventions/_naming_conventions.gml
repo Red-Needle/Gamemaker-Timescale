@@ -11,6 +11,9 @@
  *	System variable:
  *	__foo__
  *
+ *	Macro or enum:
+ *	FOO
+ *
  *	Integer:
  *	64
  *
@@ -22,5 +25,16 @@
  *
  *	String:
  *	"tohsaka is my waifu"
+ *
+ *	Enums must contain a final COUNT_ index:
+ *	enum FOO {
+ *		A, B, C,
+ *		COUNT_
+ *	}
+ *
+ *	Factory methods are used instead of constructors:
+ *	function create_foo() {
+ *		return { bar_ : 0.0 };
+ *	}
  *
  */

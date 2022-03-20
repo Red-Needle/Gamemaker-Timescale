@@ -26,14 +26,18 @@
 	#macro RELEASE	2
 
 
-
+	
+	/*
+	 *	@desc	Initialize the input system.
+	 *			Create data structures, initialize binds and input states.
+	 */
 	function input_init() {
 		global.binds = array_create(INPUT_COMMAND.COUNT_);
 		global.input = array_create(INPUT_COMMAND.COUNT_);
 		global.input_axis = vec2(0.0, 0.0);
 		
+		// Initialize all binds and input states
 		for (var _i = 0; _i < INPUT_COMMAND.COUNT_; _i++) {
-			
 			global.binds[@ _i] = {
 				type	: BIND_TYPE.KEYBOARD,
 				button	: 0
@@ -50,6 +54,11 @@
 	
 	
 	
+	/*
+	 *	@desc	Update the input system.
+	 *			Loop through all input commands and determine whether the associated bind is being pressed, released or held.
+	 *			Update other input-detection systems such as determining mouse position.
+	 */
 	function input_update() {
 		for (var _i = 0; _i < INPUT_COMMAND.COUNT_; _i++) {
 			var _bind = global.binds[@ _i];
@@ -77,6 +86,7 @@
 			}
 		}
 		
+		// Change the direction of the input axis vector to point towards the currently active movement buttons.
 		global.input_axis.x = input_check(INPUT_COMMAND.RIGHT) - input_check(INPUT_COMMAND.LEFT);
 		global.input_axis.y = input_check(INPUT_COMMAND.DOWN) - input_check(INPUT_COMMAND.UP);
 		vec2_normalize(global.input_axis, global.input_axis);
@@ -89,36 +99,55 @@
 	
 	
 	
+	/*
+	 *	@desc	Check if an input-command's associated bind is being held.
+	 */
 	function input_check(_command_index) {
 		return global.input[@ _command_index][@ HOLD];
 	}
 	
 	
 	
+	/*
+	 *	@desc	Check if an input-command's associated bind is being pressed.
+	 */
 	function input_check_pressed(_command_index) {
 		return global.input[@ _command_index][@ PRESS];
 	}
 	
 	
 	
+	/*
+	 *	@desc	Check if an input-command's associated bind is being released.
+	 */
 	function input_check_released(_command_index) {
 		return global.input[@ _command_index][@ RELEASE];
 	}
 	
 	
 	
+	/*
+	 *	@desc	The input axis is a vector that represents a movement direction.
+	 *			The direction will change based on the buttons that the player is currently holding. Eg: holding "W" will make the vector point north, holding "S" and "D" will make the vector point south-east.
+	 */
 	function input_axis() {
 		return global.input_axis;
 	}
 	
 	
 	
+	/*
+	 *	@desc	Returns mouse position as a vec2.
+	 */
 	function input_mouse_pos() {
 		return global.mouse_vec;
 	}
 	
 	
 	
+	/*
+	 *	@desc	Initialize all binds to hard-coded defaults.
+	 */
 	function input_default_binds() {
 		
 		// Bake the default binds into the game-code instead of storing them in a list or an external file.
