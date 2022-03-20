@@ -22,7 +22,7 @@
 	 *	@desc	Initialize the particle manager system.
 	 */
 	function particle_manager_init() {
-		global.particle_manager = create_wrapped_array(MAX_PARTICLES);	// The garbage collector will be responsible for freeing memory of dereferenced particles.
+		global.particle_manager = create_wrapped_array(MAX_PARTICLES);	
 		for (var _i = 0; _i < MAX_PARTICLES; _i++) {
 			wrapped_array_set(global.particle_manager, _i, NULL);
 		}
@@ -106,5 +106,6 @@
 		if (is_null(_manager))
 			return;
 			
-		wrapped_array_set(_manager, particle_get_index(_particle), NULL);
+		// The garbage collector will be responsible for freeing memory of dereferenced particles.	
+		wrapped_array_set(_manager, particle_get_index(_particle), NULL); 
 	}
