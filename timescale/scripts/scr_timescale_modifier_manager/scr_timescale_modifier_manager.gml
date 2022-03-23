@@ -11,12 +11,12 @@
 	 *
 	 *	@example	timescale_mod_add(0.5, 10.0, [TIME_LAYER.DEFAULT, TIME_LAYER.PLAYER_ACTOR])
 	 */
-	function timescale_mod_add(_new_timescale, _duration, _time_layers) {
+	function timescale_mod_add(_new_timescale, _duration, _time_layer_array) {
 		var _manager = get_timescale_mod_manager();
 		if (is_null(_manager))
-			return;
+			return NULL;
 			
-		var _mod = timescale_mod_create_(_new_timescale, _duration, _time_layers);
+		var _mod = timescale_mod_create_(_new_timescale, _duration, _time_layer_array);
 		ds_list_add(_manager.mods_, _mod);
 		
 		return _mod;

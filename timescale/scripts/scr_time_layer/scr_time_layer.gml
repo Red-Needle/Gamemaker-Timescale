@@ -5,10 +5,10 @@
 		CAMERA,
 		PLAYER_ACTOR,
 		SYSTEM,				
-		
 		COUNT_
 	}
-	// SYSTEM time-layer will never be modified. Use this for operations that need a consistent time-scale.
+	// SYSTEM time-layer will never be modified. 
+	// Use this for operations that need a consistent time-scale.
 	
 	
 	
@@ -22,10 +22,8 @@
 	
 	
 	function time_layer_set(_time_layer, _new_value) {
-		//System time layer cannot be modified.
 		if (_time_layer == TIME_LAYER.SYSTEM)
-			return;
-			
+			return;	
 		global.time_layer[@ _time_layer] = _new_value;
 	}
 	

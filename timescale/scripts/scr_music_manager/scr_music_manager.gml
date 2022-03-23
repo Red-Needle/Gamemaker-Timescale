@@ -14,7 +14,7 @@
 	function music_scale_mod_add(_scale, _duration) {
 		var _manager = get_music_manager();
 		if (is_null(_manager))
-			return;
+			return NULL;
 			
 		var _mod = music_scale_mod_create_(_scale, _duration);
 		ds_list_add(_manager.mods_, _mod);

@@ -10,14 +10,14 @@
     "name": "audiogroup_default",
     "path": "audiogroups/audiogroup_default",
   },
-  "soundFile": "pain.wav",
+  "soundFile": "snd_pain.wav",
   "duration": 0.922993,
   "parent": {
     "name": "Sounds",
     "path": "folders/Sounds.yy",
   },
   "resourceVersion": "1.0",
-  "name": "pain",
+  "name": "snd_pain",
   "tags": [],
   "resourceType": "GMSound",
 }

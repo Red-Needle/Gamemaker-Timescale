@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "vector",
-    "path": "folders/Scripts/vector.yy",
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "vec2",
+  "name": "Script28",
   "tags": [],
   "resourceType": "GMScript",
 }

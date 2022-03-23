@@ -74,7 +74,7 @@
 		// Initial impact
 		particle_burst(6, 8, pos, 16.0, 80.0, 100.0, 128.0, 256.0, 64.0, ANIMATION.FX_STARBURST, time_layer);
 		camera_impact(256.0);
-		audio_play_sound(pain, SOUND_PRIORITY.DEFAULT, false);
+		audio_play_sound(snd_pain, SOUND_PRIORITY.DEFAULT, false);
 			
 		// Slow time and distort music (after a second)
 		timer_add(TIME_LAYER.TIMERS, 0.5, function() {

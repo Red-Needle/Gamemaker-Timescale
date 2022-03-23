@@ -78,8 +78,6 @@
 		var _f = vec2_len(_vec);
 		if (_f != 0.0)
 			_f = 1.0/_f;
-		else
-			_f = 0.0; // Floating point correction
 
 		_dest.x = _vec.x * _f;
 		_dest.y = _vec.y * _f;
