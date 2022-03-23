@@ -45,7 +45,6 @@
     {"id":{"name":"scr_sound_priorty","path":"scripts/scr_sound_priorty/scr_sound_priorty.yy",},"order":1,},
     {"id":{"name":"scr_cardinal_direction","path":"scripts/scr_cardinal_direction/scr_cardinal_direction.yy",},"order":1,},
     {"id":{"name":"spr_proj_default","path":"sprites/spr_proj_default/spr_proj_default.yy",},"order":2,},
-    {"id":{"name":"Script28","path":"scripts/Script28/Script28.yy",},"order":12,},
     {"id":{"name":"spr_background","path":"sprites/spr_background/spr_background.yy",},"order":5,},
     {"id":{"name":"spr_fx_starburst","path":"sprites/spr_fx_starburst/spr_fx_starburst.yy",},"order":1,},
     {"id":{"name":"scr_particle_manager","path":"scripts/scr_particle_manager/scr_particle_manager.yy",},"order":0,},
