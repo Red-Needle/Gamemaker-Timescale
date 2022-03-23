@@ -49,7 +49,7 @@
 	 *	@arg	float	- Time value used to generate noise
 	 */
 	function simple_smooth_noise(_t) {
-		var _a = sin(_t			* pi);	// The factors are just some meaningless numbers I made up to create the illustion of randomness
+		var _a = sin(_t			* pi);	// The factors are just some meaningless numbers I made up to create the illusion of randomness
 		var _b = sin(_t * 1.88	* pi);	
 		var _c = sin(_t * 3.13	* pi);
 		var _d = sin(_t * 5.71	* pi);
